@@ -1,0 +1,174 @@
+/* Size for brand */
+nav .navbar-brand
+{
+    font-size: xx-large;
+}
+
+/* Colors for brand */
+nav .navbar-brand .blue
+{
+    color: #537fbe;
+}
+nav .navbar-brand .red
+{
+    color: #ea433b;
+}
+nav .navbar-brand .yellow
+{
+    color: #f5b82e;
+}
+nav .navbar-brand .green
+{
+    color: #2e944b;
+}
+
+#logo{
+    margin-bottom: 4%;
+    margin-top: 2%;
+}
+
+#mlogo{
+    width: 95%;
+    margin: auto;
+}
+
+#title{
+    font-family: 'Jomhuria', cursive;
+    font-size: 550%;
+}
+
+#login{
+    font-family: 'Jomhuria', cursive;
+    font-size: 200%;
+    text-decoration: none;
+}
+
+#logout{
+    font-family: 'Jomhuria', cursive;
+    font-size: 200%;
+    text-decoration: none;
+    color: red;
+}
+
+#footer{
+    font-family: 'Oswald', sans-serif;
+    color: black;
+    margin: 10px 0px 0px 0px;
+    font-size: 110%;
+    background-color: #ffcccb;
+    box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+}
+
+table {
+    background-color: #F5F5F5;
+    border-radius: 20px;
+    border-collapse: unset;
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+    margin: 2px 2px 10px 2px;
+
+}
+
+.table-hover tbody tr:hover {
+    background-color: #FF4B91;
+}
+
+thead {
+    border-radius: 20px;
+    font-family: 'Oswald', sans-serif;
+}
+
+#th2 {
+    border-top-right-radius: 20px;
+}
+
+#th1 {
+    border-top-left-radius: 20px;
+}
+
+
+td {
+    margin: auto;
+}
+
+
+#greeting {
+    font-family: 'Oswald', sans-serif;
+    color: black;
+}
+
+body {
+    background-color: #f0cffc;
+}
+
+main {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
+#pic {
+    box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+    border: none;
+    border-radius: 20px;
+
+}
+
+#pic1 {
+    box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+    border: none;
+    border-radius: 20px;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+
+}
+
+#bt3 {
+    box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;    border: none;
+    width: 60%;
+    /* height: 110%; */
+}
+
+#bt4 {
+    box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;    border: none;
+    background-color: #EAD7BB;
+    width: 60%;
+    margin: 4%
+}
+
+tbody {
+    font-family: 'Tilt Neon', sans-serif;
+    font-size: 120%;
+    font-weight: 800;
+}
+
+lable {
+    font-family: 'Oswald', sans-serif;
+
+}
+
+#loginform {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+    width: 30%;
+    margin: auto;
+    background-color: #dee2e6;
+    font-family: 'Oswald', sans-serif;
+    border-radius: 20px;
+}
+
+#btnin {
+    font-size: 100%;
+    margin-bottom: 4%;
+    box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;    border: none;
+
+}
+
+/* #inlogin {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px -50px 36px -28px inset;
+} */
+
+h4 {
+    font-family: 'Oswald', sans-serif;
+    border-radius: 20px;
+    font-size: 200%;
+    margin-bottom: 4%;
+    box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+}

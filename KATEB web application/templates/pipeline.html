@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    pipeline/satations
+{% endblock %}
+
+{% block main %}
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+    <h4> pipeline: {{ id_show[0]['pipname'].title() }} </h4>
+    <table class="table table-borderless table-condensed table-striped table-sm table-hover">
+        <thead>
+            <tr class="table-success">
+                <th id="th1" class="col-1">row</th>
+                <th class="col-1">stations</th>
+                <th class="col-6">address</th>
+                <th class="col-2">action</th>
+                <th id="th2" class="col-2">Last Checkpoint</th>
+                <!-- <th  class="col-1">id station</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            <form action="{{ url_for('pipeline', id=id) }}" method="post">
+                <tr>
+                    <td><div style="transform: rotate(90deg); background-color: inherit;">&#10170;</div></td>
+                    <td><input type="number" step="any" name="station" style="width: 100%;"></td>
+                    <td><input type="text" name="consideration" style="width: 100%;"></td>
+                    <td><button id="bt3" type="submit" name="button_action" value="button1" class="badge bg-success">&#10003;</button></td>
+            </form>
+                    <td>
+                        <div>Time</div>
+                        <div>Date</div>
+                        <div>V</div>
+                        <!-- <div><form action="{{ url_for('pipeline', id=id) }}" method="post">
+                            <button type="submit" name="button_action" value="button2">down</button>
+                            </form>
+                        </div>
+                        <div><button id="sendDataButton">up</button></div> -->
+                    </td>
+                    <!-- <td><div style="transform: rotate(90deg); background-color: inherit;">&#10170;</div></td> -->
+                </tr>
+            {% for st in sts %}
+        <tr>
+            <td name="hasan"> {{ loop.index }} </td>
+            <td> {{ st["station"] }} </td>
+            <td><textarea rows="2" cols="50" readonly style="width: 100%; text-align: center; resize: none; border: none; margin-top: auto; background-color: inherit;"> {{ st["consideration"].strip("\n") }} </textarea></td>
+            <td>
+                <form action="{{ url_for('station', id=st['id']) }}" method="post">
+                    <button id="bt4" class="btn btn-primary" type="submit" style="font-size: 200%; padding: 0px 0px; background-color: inherit; border: none; color: black;">&#9997;</button>
+            </form>
+            </td>
+            <td>
+                {% for item in items %}
+                    {% if item["baby_station"] == st["station"] %}
+                        <div> {{ item["time"] }} </div>
+                        <div> {{ item["date"] }} </div>
+                        <div> {{ item["potential"] }} </div>
+                    <!-- {% else %}
+        <!-- Code to display when the condition is not met -->
+                        <!-- <div>No data available for this station.</div> -->
+                    {% endif %}
+                {% endfor %}
+                <!-- {% for i in flist %}
+                    <div id="myThi"> {{ i }} </div>
+                {% endfor %} -->
+            </td>
+            <!-- <td class="item"> {{st["id"]}} </td> -->
+            <!-- style="display: none;" -->
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        function sendValue() {
+            var id = document.getElementById('myThi').innerText;
+            fetch('/pipelines', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id: id})
+            });
+        }
+    </script>
+
+
+
+{% endblock %}

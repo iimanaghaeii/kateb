@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    pipelines
+{% endblock %}
+
+{% block main %}
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+
+    <table class="table table-borderless table-condensed table-striped table-sm table-hover">
+        <thead>
+            <tr class="table-success">
+                <th id="th1" class="col-1">row</th>
+                <th class="col-7">pipelines</th>
+                <th class="col-1">id</th>
+                <th id="th2" class="col-2">action</th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+            <form action="/pipelines" method="post">
+                <tr>
+                    <td><div style="transform: rotate(90deg); background-color: inherit;">&#10170;</div></td>
+                    <td><input type="text" name="pipelines" style="width: 100%;"></td>
+                    <td><div style="transform: rotate(90deg); background-color: inherit;">&#10170;</div></td>
+                    <td><button id="bt3" type="submit" name="button_action" value="button3" class="badge bg-success">&#10003;</button></td>
+                </tr>
+            </form>
+
+        {% for pipe in Pipes %}
+        <tr>
+            <td> {{ loop.index }} </td>
+            <td><textarea rows="2" cols="50" readonly style="width: 100%; text-align: center; resize: none; border: none; margin-top: auto; background-color: inherit;"> {{ pipe["pipname"].strip("\n") }} </textarea></td>
+            <td id="myTh"> {{ pipe["id"] }} </td>
+            <td>
+                <form action="{{ url_for('pipeline', id=pipe['id']) }}" method="post">
+                    <button id="bt4" class="btn btn-primary" type="submit" style="font-size: 200%; padding: 0px 0px; background-color: inherit; border: none; color: black;">&#9997;</button>
+            </form>
+            </td>
+        </tr>
+        {% endfor %}
+
+
+        </tbody>
+    </table>
+    <!-- <script>
+        function sendValue() {
+            var id = document.getElementById('myTh').innerText;
+            fetch('/pipelines', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id: id})
+            });
+        }
+    </script> -->
+{% endblock %}

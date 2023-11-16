@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+<div id="loginform">
+    <img id="logo" src="../static/logo.png" width="30%">
+    <form action="/login" method="post">
+        <div class="mb-3">
+            <input id="inlogin" autocomplete="off" autofocus class="form-control mx-auto w-auto" id="username" name="username" placeholder="نام کاربری" type="text">
+        </div>
+        <div class="mb-3">
+            <input id="inlogin" class="form-control mx-auto w-auto" id="password" name="password" placeholder="رمز عبور" type="password">
+        </div>
+        {% if error %}
+            <p class=error style="color: red;"><strong style="color: black;">Error:</strong> {{ error }} </p>
+        {% endif %}
+        <button id="btnin" type="submit" class="badge rounded-pill bg-secondary">Log In</button>
+    </form>
+</div>
+{% endblock %}

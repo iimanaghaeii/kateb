@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    satation
+{% endblock %}
+
+{% block main %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get all input fields with the 'data-jdp' and 'data-jdp-only-time' attributes
+        var dateInput = document.getElementById('dateInput');
+        var timeInput = document.getElementById('timeInput');
+
+        // Initialize Jalali Datepicker for the date input
+        if (dateInput) {
+            jalaliDatepicker.startWatch({
+                input: dateInput, // Specify the date input field
+                // minDate: "attr",
+                // maxDate: "attr",
+                time: false, // Date-only configuration
+                date: true, // Enable date input
+                // Other configuration options here
+            });
+        }
+
+        // Initialize Jalali Datepicker for the time input
+        if (timeInput) {
+            jalaliDatepicker.startWatch({
+                input: timeInput, // Specify the time input field
+            });
+        }
+    });
+</script>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+    <h3> {{ id_show[0]['station'] }} </h3>
+    <table class="table table_striped">
+        <thead>
+            <tr>
+                <th class="col-1">row</th>
+                <!-- <th class="col-1">stations</th> -->
+                <th class="col-7">considerations</th>
+                <th class="col-2">Voltage</th>
+                <th class="col-1">Date</th>
+                <th class="col-1">Time</th>
+                <th class="col-1">action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <form action="{{ url_for('station', id=id_show[0]['id']) }}" method="post">
+                <tr>
+                    <td>***</td>
+                    <!-- <td><input type="number" step="any" name="station" style="width: 75%;"></td> -->
+                    <td><input type="text" name="consideration" style="width: 85%;"></td>
+                    <td><input type="number" step="any" name="voltage" style="width: 75%;"></td>
+                    <td>
+                        <input type="text" data-jdp placeholder="Enter Date..." name="data" id="dateInput" autocomplete="off"/>
+                    </td>
+                    <td>
+                        <input type="text" data-jdp data-jdp-only-time placeholder="Enter Time..." name="time" id="timeInput" autocomplete="off">
+                    </td>
+                    <td><button class="btn btn-primary" type="submit" name="button_action" value="button2">ADD</button></td>
+                </tr>
+            </form>
+            {% for checke in checkes %}
+        <tr>
+            <td> {{ loop.index }} </td>
+            <td> {{ checke["consideration"] }} </td>
+            <td> {{ checke["potential"] }} </td>
+            <td> {{ checke["date"] }} </td>
+            <td> {{ checke["time"] }} </td>
+            <!-- <td> -->
+                <!-- <form action="{{ url_for('station', id=id__) }}" method="post">
+                    <button class="btn btn-primary" type="submit">Go</button>
+            </form> -->
+            <!-- </td> -->
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+<!-- <textarea rows="4" cols="50">
+    At w3schools.com you will learn how to make a website.
+    </textarea> -->

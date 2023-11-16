@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block main %}
+
+<h3 id="greeting">Welcome Back, {{Fname}}, {{Lname}}</h3>
+<p>
+<div class="row">
+    <div  class="col-4">
+        <lable>Corrosion Coupon</lable>
+        <form action="/" method="post">
+            <button id="pic" type="submit"><img src="static/CorrosionCoupon .jpg" id="pic1"></button>
+        </form>
+    </div>
+    <div  class="col-4">
+        <lable>Pipeline</lable>
+        <form action="/pipelines" method="post">
+            <button id="pic" type="submit" name="button_action" value="button4"><img src="static/pipeline.jpg" id="pic1"></button>
+        </form>
+    </div>
+    <div class="col-4">
+        <lable>Cathodic Protection Rectifier</lable>
+        <form action="/" method="post">
+        <button id="pic" type="submit" name="button_action" value="button6"><img src="static/cathodic-protection-rectifier.jpg" width="100%" id="pic1"></button>
+    </form>
+</div>
+</div>
+</p>
+
+{% endblock %}
