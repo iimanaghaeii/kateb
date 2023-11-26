@@ -55,12 +55,15 @@ def index():
     row = db.execute("SELECT * FROM users WHERE id = ?", id)
     Fname = row[0]['Fname']
     Lname = row[0]['Lname']
-    button_pressed = request.form.get('button_action')
-    if button_pressed == 'button4':
-            pipelines = session.get('Pipeliness')
-            return redirect(url_for('pipelines', Pipes=pipelines))
-
-
+    if request.method == 'POST':
+        print("hello")
+        button_pressed = request.form.get('button_action')
+        if button_pressed == 'button4':
+                pipelines = session.get('Pipeliness')
+                return redirect(url_for('pipelines', Pipes=pipelines))
+        elif button_pressed == 'button6':
+            print("i am here")
+            return redirect("transes.html")
 
     return render_template("index.html", Fname=Fname, Lname=Lname)
 
@@ -223,6 +226,31 @@ def receive_data():
 
     # return redirect(url_for('pipeline', id_show=name, id=pipeid, items=data))
     return render_template("pipeline.html", id_show=name, id=pipeid, items=data)
+
+#برای ایجاد و کنترل صفحع کنترل ترانسها 
+@app.route('/trans_control' , methods = ['POST','GET'])
+@login_required
+def trans_control():
+    if request.method == 'POST':
+        
+        """
+        here
+        یک بخش درست کنیم برای ریدایرکت دادن به افزودن ترانس
+        we should make onetrans template for adding and showing
+        """
+        pass
+    
+    
+    translist = []
+    id_draft = db.execute("select DISTINCT id from Trans_rectifire")
+    if id_draft:
+        for i in id_draft : 
+            newlist = db.execute("select id,VOLTAGE,Current from Trans_rectifire where id =? order by date DESC", i["id"])
+            translist.append(newlist[0])
+            return render_template("transes.html", trans_list = translist)
+    else:
+            return render_template("transes.html", trans_list = "non")
+    
 
 @app.route("/logout")
 def logout():

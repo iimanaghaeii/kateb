@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    transes
+{% endblock %}
+
+
+{% block main %}
+
+<h2> Hi sir this is under construction </h2>
+
+
+<table class="table table-borderless table-condensed table-striped table-sm table-hover">
+    <thead>
+        <tr class="table-success">
+            <th id="th1" class="col-1">ID</th>
+            <th class="col-1">Voltage</th>
+            <th class="col-1">Current(A)</th>
+            <th class="col-2">Oil status</th>
+            <th class="col-1">Temprature</th>
+            <th class="col-1">GeoLocation</th>
+            <th id="th2" class="col-1">Save</th>
+            <th id="th2" class="col-1">Info</th>
+
+        </tr>
+    </thead>
+
+    <tbody>
+        <form action="/pipelines" method="post">
+            <tr>
+                <td><input type="text" name="trans-id" style="width: 100%;"></td>
+                <td><input type="text" name="Voltage" style="width: 100%;"></td>
+                <td><input type="text" name="Current" style="width: 100%;"></td>
+                <td><input type="text" name="oil" style="width: 100%;"></td>
+                <td><input type="text" name="temprature" style="width: 100%;"></td>
+                <td><input type="text" name="GeoLocation" style="width: 100%;"></td>
+                <td><button id="btsave" type="submit" name="btn-save" value="btnsave" class="badge bg-success">&#10003;</button></td>
+                <td><button id="btsave" type="submit" name="btn-info" value="btn-info" class="badge bg-success">&#10005;</button></td>
+            </tr>
+        </form>
+    
+</div>
+
+{% endblock %}

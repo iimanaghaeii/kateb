@@ -61,4 +61,18 @@ CREATE TABLE baby (
  FOREIGN KEY(user_id) REFERENCES users(id)
 );
 
+CREATE TABLE Trans_rectifire (
+    id INTEGER,
+    user_id INTEGER,
+    pipeline_id INTEGER,
+    geolocation TEXT,
+    Current FLOAT,
+    VOLTAGE FLOAT,
+    temprature INTEGER,
+    oil TEXT DEFAULT "unknown",
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(user_id) REFERENCES users(id),
+    FOREIGN KEY(pipeline_id) REFERENCES father(id)
+)
+
 
