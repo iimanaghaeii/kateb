@@ -4,35 +4,6 @@
     transes
 {% endblock %}
 
-
 {% block main %}
-
 <h2> Hi sir this is under construction </h2>
-<form action="/trans_control">
-  <label class="col-2" for="btnadd"> افزودن ترانس </label>
-  <input class="col-2" id = "btnadd" name="add-trans" type="submit" value="btnadd">
-</form>
-<table class="table table-borderless table-condensed table-striped table-sm table-hover">
-    <thead>
-        <tr class="table-success">
-            <th id="th1" class="col-1">ID</th>
-            <th class="col-2">آخرین ولتاژ ثبت شده</th>
-            <th class="col-2"> آخرین جریان ثبت شده</th>            
-            <th id="th2" class="col-3">نمایش اطلاعات کامل و افزودن </th>            
-            <th id="th2" class="col-1"> CCB </th>
-
-        </tr>
-    </thead>
-
-    <tbody>
-        <form action="/trans_control" method="post">
-            <p> hear i should write a for loop on the transes list which iterate on 
-                id's and show one last saved id.
-                we should consider that name and values of transes that client clicked
-                on have to be passed by the post method                
-            </p>
-        </form>
-    
-
-
 {% endblock %}

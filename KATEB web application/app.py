@@ -1,5 +1,4 @@
 import os
-
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session, url_for, flash
 from flask_session import Session
@@ -63,7 +62,7 @@ def index():
                 return redirect(url_for('pipelines', Pipes=pipelines))
         elif button_pressed == 'button6':
             print("i am here")
-            return redirect("transes.html")
+            return redirect('/trans_control')
 
     return render_template("index.html", Fname=Fname, Lname=Lname)
 
@@ -232,26 +231,19 @@ def receive_data():
 @login_required
 def trans_control():
     if request.method == 'POST':
-        
-        """
-        here
-        یک بخش درست کنیم برای ریدایرکت دادن به افزودن ترانس
-        we should make onetrans template for adding and showing
-        """
-        pass
+        print("hi  ")
+    else:    
+        translist = []
+        print("HIIIIIII FUCK U")            
+        id_draft = db.execute("select DISTINCT id from Trans_rectifire")
+        if id_draft:
+            for i in id_draft : 
+                newlist = db.execute("select id,VOLTAGE,Current from Trans_rectifire where id =? order by date DESC", i["id"])
+                translist.append(newlist[0])
+                return render_template("transes.html")            
+        else:
+                return render_template("transes.html")
     
-    
-    translist = []
-    id_draft = db.execute("select DISTINCT id from Trans_rectifire")
-    if id_draft:
-        for i in id_draft : 
-            newlist = db.execute("select id,VOLTAGE,Current from Trans_rectifire where id =? order by date DESC", i["id"])
-            translist.append(newlist[0])
-            return render_template("transes.html", trans_list = translist)
-    else:
-            return render_template("transes.html", trans_list = "non")
-    
-
 @app.route("/logout")
 def logout():
     """Log user out"""
