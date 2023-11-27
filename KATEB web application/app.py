@@ -231,7 +231,7 @@ def receive_data():
 @login_required
 def trans_control():
     if request.method == 'POST':
-        print("hi  ")
+        print("hi")
     else:    
         translist = []
         print("HIIIIIII FUCK U")            
