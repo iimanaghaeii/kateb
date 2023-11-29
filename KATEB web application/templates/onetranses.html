@@ -1,14 +1,14 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    transes
+TRANS RECTIFIER DATA   
 {% endblock %}
-
 
 {% block main %}
 
 <h2> Hi sir this is under construction </h2>
 
+<h3> hi {{user}}</h3>
 
 <table class="table table-borderless table-condensed table-striped table-sm table-hover">
     <thead>
@@ -16,29 +16,98 @@
             <th id="th1" class="col-1">ID</th>
             <th class="col-1">Voltage</th>
             <th class="col-1">Current(A)</th>
-            <th class="col-2">Oil status</th>
+            <th class="col-1">Oil status</th>
             <th class="col-1">Temprature</th>
             <th class="col-1">GeoLocation</th>
-            <th id="th2" class="col-1">Save</th>
-            <th id="th2" class="col-1">Info</th>
-
+            <th class="col-2">Uesrname</th>
+            <th class="col-3">date</th>
+            <th id="th2" class="col-1">Save</th>            
         </tr>
     </thead>
 
-    <tbody>
-        <form action="/pipelines" method="post">
-            <tr>
-                <td><input type="text" name="trans-id" style="width: 100%;"></td>
+    <tbody>        
+        <form action="/trans_info" method="post">
+            <tr>                
+                <td><input type="text" name="trans-id" style="width: 100%;" value="{{trans_data[0]['id']}}"></td>
                 <td><input type="text" name="Voltage" style="width: 100%;"></td>
                 <td><input type="text" name="Current" style="width: 100%;"></td>
                 <td><input type="text" name="oil" style="width: 100%;"></td>
-                <td><input type="text" name="temprature" style="width: 100%;"></td>
+                <td><input type="text" name="temperature" style="width: 100%;"></td>
                 <td><input type="text" name="GeoLocation" style="width: 100%;"></td>
-                <td><button id="btsave" type="submit" name="btn-save" value="btnsave" class="badge bg-success">&#10003;</button></td>
-                <td><button id="btsave" type="submit" name="btn-info" value="btn-info" class="badge bg-success">&#10005;</button></td>
+                <td><input type="text" name="Uesername" style="width: 100%;" value="{{user}}"> </td>
+                <td><input type="text" name="Timestamp" style="width: 100%;" value="{{now}}"> </td>
+                <td><button type="submit" class="badge bg-success">&#10003; Save</button></td>
             </tr>
         </form>
-    
-</div>
+        {% for i in trans_data %}
+        <tr class="trans-data">
+            <td>{{i['id']}}</td>
+            <td class ="Voltage">{{i['VOLTAGE']}}</td>
+            <td class = "Current">{{i['Current']}}</td>
+            <td>{{i['oil']}}</td>
+            <td>{{i['temprature']}}</td>
+            <td>{{i['geolocation']}}</td>
+            <td>{{i['username']}}</td>            
+            <td class="time">{{i['date']}}</td>            
+        </tr>
+        {% endfor %}        
+        </tbody>
+</table>
+<div>
+    <h2> نمایش نمودار تغییرات</h2>
+    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
 
+</div>
+<script type="text/javascript">
+    window.onload = function () {
+    var voltages = document.getElementsByClassName("Voltage");
+    var Currents = document.getElementsByClassName("Current");
+    var times = document.getElementsByClassName("time");
+    console.log(voltages)    ;
+    let voltage = [];
+    let Current = [];    
+    for(var i = 0; i < voltages.length; i++) {
+    mytime = times[i].innerHTML.toString();    
+    let new_time = mytime.split(" ");   
+    let dates =  new_time[0].split("-");
+    let time = new_time[1].split(":");     
+    voltage.push({ label: new Date (Number(dates[0]),Number(dates[1]), Number(dates[2]), Number(time[0]), Number(time[1]),Number(time[2])), y: Number(voltages[i].innerHTML)});    
+    Current.push({ label: new Date (Number(dates[0]),Number(dates[1]), Number(dates[2]), Number(time[0]), Number(time[1]),Number(time[2])), y: Number(Currents[i].innerHTML)}); 
+}
+
+    var chart = new CanvasJS.Chart("chartContainer",
+    {title:{
+    text: "Voltage-Current / Time"
+    },
+    axisY2: [
+    {
+        title: "Voltage",
+        lineColor: "#369EAD",
+    }, 
+    {
+        title: "Current",
+        lineColor: "#C24642",
+    }
+],
+    
+    data: [
+    {
+    type: "line",
+    axisYType: "secondary",
+    axisYIndex: 0,
+    dataPoints: voltage},
+    {
+    type: "line",
+    axisYType: "secondary",
+    axisYIndex: 1,
+    dataPoints: Current
+    }
+    ]
+});
+
+chart.render();
+}
+
+</script>
+<script type="text/javascript" src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
 {% endblock %}

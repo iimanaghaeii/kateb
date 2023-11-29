@@ -1,3 +1,4 @@
+import sys
 import os
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session, url_for, flash
@@ -9,7 +10,6 @@ from sqlite3 import IntegrityError
 from datetime import datetime
 import pytz
 from helpers import apology, login_required, usd
-import os
 
 
 # Configure application
@@ -54,15 +54,14 @@ def index():
     row = db.execute("SELECT * FROM users WHERE id = ?", id)
     Fname = row[0]['Fname']
     Lname = row[0]['Lname']
-    if request.method == 'POST':
-        print("hello")
-        button_pressed = request.form.get('button_action')
+    if request.method == 'POST':        
+        button_pressed = request.form.get('button_action')        
         if button_pressed == 'button4':
                 pipelines = session.get('Pipeliness')
                 return redirect(url_for('pipelines', Pipes=pipelines))
         elif button_pressed == 'button6':
             print("i am here")
-            return redirect('/trans_control')
+            return redirect("/trans_control")
 
     return render_template("index.html", Fname=Fname, Lname=Lname)
 
@@ -71,7 +70,7 @@ def index():
 def login():
     error = None
     """Log user in"""
-
+    
     # Forget any user_id
     session.clear()
 
@@ -230,20 +229,47 @@ def receive_data():
 @app.route('/trans_control' , methods = ['POST','GET'])
 @login_required
 def trans_control():
-    if request.method == 'POST':
-        return "<p>Hello, World!</p>"
-    else:    
-        translist = []
-        print("HIIIIIII FUCK U")            
-        id_draft = db.execute("select DISTINCT id from Trans_rectifire")
-        if id_draft:
-            for i in id_draft : 
-                newlist = db.execute("select id,VOLTAGE,Current from Trans_rectifire where id =? order by date DESC", i["id"])
-                translist.append(newlist[0])
-                return render_template("transes.html")            
-        else:
-                return render_template("transes.html")
+    translist = []
+    current_time = datetime.now()
+    id_draft = db.execute("select DISTINCT id from Trans_rectifire")
+    if id_draft:
+        for i in id_draft : 
+            newlist = db.execute("select id,VOLTAGE,Current from Trans_rectifire where id =? order by date DESC", i["id"])
+            translist.append(newlist[0])
     
+    if request.method == 'POST':
+        btn = request.form.get("btn-info")
+        if btn is not None:        
+            return redirect('/trans_info?btn=' + btn)        
+    return render_template("transes.html", trans_list = translist, now = current_time)                                       
+        
+@app.route('/trans_info' , methods = ['POST','GET'])
+@login_required
+def trans_info():
+    current_time = datetime.now()
+    btn = request.args.get("btn")
+    user = db.execute("select Fname,Lname from users where id = ?" , session["id"])
+    current_user = user[0]['Fname'] +" " +  user[0]['Lname']
+    id = btn
+    listy = db.execute("select * from Trans_rectifire where id =? order by date DESC", id)
+    for i in listy:
+        username = db.execute("select Fname,Lname from users where id = ?" , i['user_id'])
+        i['username'] = username[0]['Fname'] +" " + username[0]['Lname']            
+
+    if request.method == "POST":                    
+        #try:
+        id = request.form.get("trans-id")
+        voltage = request.form.get("Voltage")
+        current = request.form.get("Current")
+        oil = request.form.get("oil")
+        temperature = request.form.get("temperature")
+        geo_location = request.form.get("GeoLocation")            
+        timestamp = request.form.get("Timestamp")                           
+        db.execute("insert into Trans_rectifire (id,user_id,geolocation,Current,VOLTAGE,temprature,oil,date) values(?,?,?,?,?,?,?,?)" , 
+                    id,session["id"],geo_location,current,voltage,temperature,oil,timestamp)
+        return redirect('/trans_info?btn=' + str(id) )                        
+    return render_template("onetranses.html" , trans_data = listy, user = current_user, id= id, now = current_time)
+
 @app.route("/logout")
 def logout():
     """Log user out"""
