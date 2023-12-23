@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    CCB
+{% endblock %}
+
+{% block main %}
+
+<h1></h1>
+<h2> CCB for trans {{trans["name_id"]}} </h2>
+<p>here we are</p>
+
+{{ccb_data_list}}
+
+<form id="addCcbForm" action="/ccb/{{trans_id}}" method="post">
+    <h3> ADD CCB</h3>
+    <label class="col-1" for="pipeId">select pipe name_id</label>
+    <select class="col-3" name="pipes" id="pipenames">
+        {% for i in pipes %}
+        <option name="pipe" value="{{i['pipname']}}">{{i['pipname']}}</option>
+        {% endfor %}
+    </select>                    
+    <input class="col-1" type="submit" name="form_id" value="Add CCB">
+</form>
+
+
+<table>
+    <thead>    
+        <tr class="table-success">            
+            <th id="th1" class="col-1">row</th>
+            <th id="th2" class="col-1">trans_name</th>                                                             
+            <th id="th3" class="col-1"> pipe name </th>
+            <th id="th4" class="col-1"> last voltage </th>
+            <th id="th5" class="col-1"> last current </th>
+            <th id="th6" class="col-1"> info - ADD </th>
+        </tr>    
+    </thead>
+    <tbody>        
+        {% set ccb_idlist = [] %}        
+        {% for i in ccb_data_list %}
+            {% if i['id'] not in ccb_idlist %}            
+                {{ ccb_idlist.append(i['id']) }}        
+                <tr>
+                    <form action="{{ url_for('ccb_data_add', ccbid = i['id']) }}" method="post">                                            
+                    <td name="name_id" data-id="{{i['name_id']}}">{{i["id"]}}</td>
+                    <td>{{i["trans_name"]}}</td>                                       
+                    <td>{{i["pipename"]}}</td>
+                    <td>{{i["voltage"]}}</td>
+                    <td>{{i["current"]}}</td>            
+                    <td>
+                        <button id="bt2" type="submit" name="form_id" value="add" class="badge bg-success">&#10003;</button>
+                    </td>            
+                    </form>    
+                    </tr>                  
+
+            {% endif %}
+        {% endfor %}        
+    </tbody>
+</table>
+{% endblock %}

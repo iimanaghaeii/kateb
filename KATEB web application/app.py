@@ -225,53 +225,109 @@ def receive_data():
     # return redirect(url_for('pipeline', id_show=name, id=pipeid, items=data))
     return render_template("pipeline.html", id_show=name, id=pipeid, items=data)
 
-#برای ایجاد و کنترل صفحع کنترل ترانسها 
+#برای ایجاد و کنترل صفحه کنترل ترانسها 
 @app.route('/trans_control' , methods = ['POST','GET'])
 @login_required
 def trans_control():
-    translist = []
+
     current_time = datetime.now()
-    id_draft = db.execute("select DISTINCT id from Trans_rectifire")
-    if id_draft:
-        for i in id_draft : 
-            newlist = db.execute("select id,VOLTAGE,Current from Trans_rectifire where id =? order by date DESC", i["id"])
-            translist.append(newlist[0])
-    
+    name = ""
+    translist = db.execute("select * from trans")                                        
     if request.method == 'POST':
-        btn = request.form.get("btn-info")
-        if btn is not None:        
-            return redirect('/trans_info?btn=' + btn)        
+        form_id =  request.form.get("form_id")
+        if form_id is not None:
+            if form_id == "add_trans":
+                name = request.form['name']
+                geo = request.form['geolocation']
+                db.execute("insert into trans(name_id,geolocation) values (?,?)", name,geo)                                        
+                return redirect("/trans_control")
+            elif form_id == "btn_info":
+                name = request.form['namec']                
+                id = request.form['id']                
+                return redirect(url_for('trans_info',id=int(id)))
+            else:
+                id = request.form['id']
+                return redirect(url_for('ccb',id = int(id)))  
+            
     return render_template("transes.html", trans_list = translist, now = current_time)                                       
         
-@app.route('/trans_info' , methods = ['POST','GET'])
+@app.route('/trans_info/<id>' , methods = ['POST','GET'])
 @login_required
-def trans_info():
+def trans_info(id):
+   
     current_time = datetime.now()
-    btn = request.args.get("btn")
+    tr_name = db.execute("select name_id from trans where id=?",id)
+    trans_name = tr_name[0]['name_id']
     user = db.execute("select Fname,Lname from users where id = ?" , session["id"])
     current_user = user[0]['Fname'] +" " +  user[0]['Lname']
-    id = btn
-    listy = db.execute("select * from Trans_rectifire where id =? order by date DESC", id)
-    for i in listy:
-        username = db.execute("select Fname,Lname from users where id = ?" , i['user_id'])
-        i['username'] = username[0]['Fname'] +" " + username[0]['Lname']            
+    trans_log = db.execute("select * from trans_record where trans_id =? order by recordtime DESC",id)    
+   
+    if request.method == "POST" and (request.form.get("form_control") is not None):                    
+                    
+        voltage = request.form['Voltage']
+        current = request.form['Current']
+        oil = request.form['oil']        
+        temperature = request.form["temperature"]        
+        timestamp = request.form["Timestamp"]
+        db.execute("insert into trans_record (trans_id,username,current,voltage,temprature,oil,recordtime) values(?,?,?,?,?,?,?)" 
+                   ,id,current_user,current,voltage,temperature,oil,timestamp)
+        
+        return redirect(url_for('trans_info',id=id))                       
+    return render_template("onetranses.html" , trans_data = trans_log, user = current_user, id= id, name= trans_name, now = current_time)
 
-    if request.method == "POST":                    
-        #try:
-        id = request.form.get("trans-id")
-        voltage = request.form.get("Voltage")
-        current = request.form.get("Current")
-        oil = request.form.get("oil")
-        temperature = request.form.get("temperature")
-        geo_location = request.form.get("GeoLocation")            
-        timestamp = request.form.get("Timestamp")                           
-        db.execute("insert into Trans_rectifire (id,user_id,geolocation,Current,VOLTAGE,temprature,oil,date) values(?,?,?,?,?,?,?,?)" , 
-                    id,session["id"],geo_location,current,voltage,temperature,oil,timestamp)
-        return redirect('/trans_info?btn=' + str(id) )                        
-    return render_template("onetranses.html" , trans_data = listy, user = current_user, id= id, now = current_time)
+@app.route('/ccb/<id>' , methods = ['POST','GET'])
+@login_required
+def ccb(id):
+    the_time = datetime.now()        
+    #ccb_ifo_list = db.execute("SELECT ccb_record.*, father.pipname FROM ccb_record JOIN ccb ON ccb_record.ccb_id = ccb.id JOIN father ON ccb.pipe_id = father.id WHERE ccb.trans_id = ? orfer by ccb_record.mydate",
+    #                          id)
+    pipe_list = db.execute("select * from father")
+    trans = db.execute(" select name_id from trans where id=?", id)
+    ccbs = db.execute("SELECT c.*,cr.voltage,cr.current ,f.pipname AS pipename, t.name_id AS trans_name FROM ccb c LEFT JOIN ccb_record cr ON c.id = cr.ccb_id JOIN father f ON c.pipe_id = f.id JOIN trans t ON c.trans_id = t.id where t.id =? order by cr.mydate desc", id) 
+    ccb_list = db.execute("select * from father")
+    #db.execute("SELECT c.id, f.pipname AS pipename FROM ccb c JOIN father f ON c.pipe_id = f.id join trans t on c.trans_id = t.id where t.id=?", id)      
+    if request.method == "POST":        
+        btn = request.form.get("form_id")
+        if btn is not None:
+            if btn == "Add CCB":
+                pipename = request.form['pipes']                
+                pipe_id = db.execute("select id from father where pipname = ?",pipename )                                                                       
+                try:
+                    db.execute("insert into ccb (trans_id,pipe_id) values (?,?)", id, pipe_id[0]['id'])                
+                    flash("success")
+                except:
+                    flash("there is an err in assigning data do not choose repeatative pipelines")
+            
+                return redirect(f"/ccb/{id}")            
+        elif btn=="add":            
+            ccbid = request.form["name_id"]
+            return redirect(url_for("ccb_info"), ccbid)
+        else:
+            return apology("please execuse us. under construction")    
+    return render_template("TransCCB.html",trans = trans[0], trans_id = id, pipes = pipe_list, ccb_data_list = ccbs, trans_ccb = ccb_list )
+    
+@app.route('/ccb_data_add/<ccbid>' , methods = ['POST','GET'])
+@login_required
+def ccb_data_add(ccbid): 
+    ccb_record = db.execute("select * from ccb_record where ccb_id = ?", ccbid)    
+    if request.method == "POST":
+        btn = request.form.get("form_control")
+        if btn is not None:
+            voltage = request.form['voltasge']
+            current = request.form['current']
+            thetime = request.form['time']
+            try:
+                db.execute("insert into ccb_record (ccb_id,voltage,current,mydate,user_id) values(?,?,?,?,?)",
+                           ccbid,voltage,current,thetime,session['id'])            
+                flash("successfully saved")
+                return redirect(url_for("ccb_info"),ccbid)
+            except:
+                flash("there is problem saving your data")
+    return render_template("ccb_info.html", id = ccbid, record =  ccb_record, now = datetime.now())     
 
 @app.route("/logout")
 def logout():
+    
     """Log user out"""
 
     # Forget any user_id

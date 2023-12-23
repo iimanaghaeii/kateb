@@ -9,45 +9,56 @@
 
 <h1>{{now}}</h1>
 <h2> Hi sir this is under construction </h2>
-<p>    
-<div>
-<form action="/trans_control">   
-    <form action="/trans_control" method="post">
-    <button id="pic" type="submit" name="btn-add" value="add_trans"><img src="static/cathodic-protection-rectifier.jpg" width="30%" id="pic1"></button>    
-</form>
-</div>
-</p>
+
+<table name="ADD-trans" class="table table-borderless table-condensed table-striped table-sm table-hover">
+    <thead>
+        <tr class="table-success">            
+            <th id="th2" class="col-1">name</th>
+            <th id="th2" class="col-1">Geo Location</th>                                                             
+            <th id="th4" class="col-1"> Save </th>
+        </tr>
+    </thead>
+    <tbody>            
+        <tr>
+        <form action="/trans_control" method="post">        
+        <td><input type="text" name="name" style="width: 100%;"></td>                                
+        <td><input type="text" name="geolocation" style="width: 100%;"></td>                                               
+        <td><button id="bt3" type="submit" name="add" class="badge bg-success">&#10003;</button></td>
+        <input type="hidden" name="form_id" value="add_trans">
+        </form>    
+        </tr>
+    </tbody>
+</table>
+
+
 
 {% if trans_list|length != 0 %}    
 <table class="table table-borderless table-condensed table-striped table-sm table-hover">
     <thead>
         <tr class="table-success">
             <th id="th1" class="col-1">ID</th>
-            <th class="col-2">آخرین ولتاژ ثبت شده</th>
-            <th class="col-2"> آخرین جریان ثبت شده</th>  
-                     
-            <th id="th2" class="col-2">نمایش اطلاعات کامل و افزودن </th>                                   
-            <th id="th2" class="col-1"> CCB </th>
-
+            <th id="th2" class="col-1">name</th>
+            <th id="th2" class="col-1">Geo Location</th>                                                 
+            <th id="th3" class="col-2">نمایش اطلاعات کامل و افزودن </th>                                   
+            <th id="th4" class="col-1"> CCB </th>
         </tr>
     </thead>
     <tbody>        
         {% for i in trans_list %}        
         <tr>
+        <form action="/trans_control" method="post">                        
         <td>{{i["id"]}}</td>
-        <td>{{i["VOLTAGE"]}} (V)</td>
-        <td>{{i["Current"]}} (A)</td>
-       
-        <form action="/trans_control" method="post">
-        <td><button id="bt2" type="submit" name="btn-info" value="{{i['id']}}" class="badge bg-success">&#10003;</button></td>
-
-        <td><button id="bt3" type="submit" name="btn-ccb" value="{{i['id']}}" class="badge bg-success">&#10003;</button></td>
+        <td name="name_id" data-id="{{i['name_id']}}">{{i["name_id"]}}</td>
+        <td>{{i["geolocation"]}}</td>                            
+        
+        <td><button id="bt2" type="submit" name="form_id" value="btn_info" class="badge bg-success">&#10003;</button></td>
+        <td><button id="bt3" type="submit" name="form_id" value="btn_ccb" class="badge bg-success">&#10003;</button></td>
+        <input type="hidden" name="id" value="{{i['id']}}">
+        <input type="hidden" name ="namec" value="{{i['name_id']}}">
         </form>    
         </tr>                            
         {% endfor %}
-        <div>
-            
-        </div>
+        
 {% endif %}
 
 {% endblock %}
